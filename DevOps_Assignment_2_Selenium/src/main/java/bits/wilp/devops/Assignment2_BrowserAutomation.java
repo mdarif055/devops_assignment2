@@ -21,7 +21,7 @@ public class Assignment2_BrowserAutomation {
     @Before
     public void Set_Up () throws IOException {
 
-      // 2020MT93542@wilp.bits-pilani.ac.in  - Setup driver based on browser set by user
+      //  Setup driver based on browser set by user
         String browser = get_browser();
         if(browser.equalsIgnoreCase("Chrome")){
             System.setProperty("webdriver.chrome.driver", "Drivers\\chromedriver.exe");
