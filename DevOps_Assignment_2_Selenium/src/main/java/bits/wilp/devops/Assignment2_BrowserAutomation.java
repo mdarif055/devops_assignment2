@@ -7,6 +7,11 @@ import org.junit.Test;
 import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class Assignment2_BrowserAutomation {
 
@@ -14,14 +19,25 @@ public class Assignment2_BrowserAutomation {
 
 
     @Before
-    public void Set_Up () {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\QE636BX\\Sufiyan\\AppliTools\\chromedriver_win32\\chromedriver.exe");
-        driver = new ChromeDriver();
+    public void Set_Up () throws IOException {
+
+      // 2020MT93542@wilp.bits-pilani.ac.in  - Setup driver based on browser set by user
+        String browser = get_browser();
+        if(browser.equalsIgnoreCase("Chrome")){
+            System.setProperty("webdriver.chrome.driver", "Drivers\\chromedriver.exe");
+            driver = new ChromeDriver();
+        }else if(browser.equalsIgnoreCase("FireFox")){
+            System.setProperty("webdriver.gecko.driver", "Drivers\\geckodriver.exe");
+            driver = new FirefoxDriver();
+        }else{
+            driver.close();
+        }
 
     }
 
     @Test
-    public void Login () {
+    public void Login () throws IOException {
+
         String url = "https://elearn.bits-pilani.ac.in/";
         driver.navigate().to(url);
 
@@ -29,7 +45,19 @@ public class Assignment2_BrowserAutomation {
 
     @After
     public void Close () {
-       driver.quit();
+      driver.quit();
+
+    }
+
+    public static String get_browser() throws IOException {
+
+        Properties prop = new Properties();
+        FileInputStream propfilename = null;
+        String propFileName = "Common.properties";
+        propfilename = new FileInputStream("src/"+propFileName);
+        prop.load(propfilename);
+        String lob_question = prop.getProperty("browser");
+        return lob_question;
 
     }
 
