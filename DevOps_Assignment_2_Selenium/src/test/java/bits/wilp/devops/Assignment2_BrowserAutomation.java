@@ -27,8 +27,13 @@ public class Assignment2_BrowserAutomation {
     @Before
     public void Set_Up () throws IOException {
 
-      //  Setup driver based on browser set by user
-        String browser = get_browser();
+      //  Task 9 - Setup driver based on browser set by user
+        Properties prop = new Properties();
+        FileInputStream propfilename = null;
+        String propFileName = "Common.properties";
+        propfilename = new FileInputStream("src/"+propFileName);
+        prop.load(propfilename);
+        String browser = prop.getProperty("browser");
         if(browser.equalsIgnoreCase("Chrome")){
             System.setProperty("webdriver.chrome.driver", "Drivers\\chromedriver.exe");
             driver = new ChromeDriver();
@@ -41,7 +46,7 @@ public class Assignment2_BrowserAutomation {
 
     }
 
-    @Test
+    @Test @Ignore
     public void Login_eLearning () throws IOException {
 
         // Task1
@@ -58,7 +63,7 @@ public class Assignment2_BrowserAutomation {
         WebElement loginbutton = driver.findElement(By.xpath("//button[@id='submitbtn']"));
         loginbutton.click();
 
-         // Task 2 - login form a different window
+
 
 
 
@@ -67,7 +72,7 @@ public class Assignment2_BrowserAutomation {
     }
 
 
-    @Test
+    @Test @Ignore
     public void test_dynamic_static_elements () throws InterruptedException {
 
         // Task3 -Dynamic  Elements
@@ -108,7 +113,7 @@ public class Assignment2_BrowserAutomation {
 
     }
 
-    @Test
+    @Test @Ignore
     public void test_list () throws InterruptedException {
 
         // Task4 - Extract web elements such as table or list
@@ -136,7 +141,43 @@ public class Assignment2_BrowserAutomation {
 
     }
 
+    @Test
+    public void CSS_Xpath () throws IOException {
 
+
+       // Read the Locator Selection from Properties file
+        String locator = read_property("element_locator");
+
+      //  Task 5 : Usage of locator types, whether to use CSS selector or Xpath
+        if(locator.equalsIgnoreCase("cssSelector")) {
+            System.out.println("Using cssSelector");
+            String url = "https://elearn.bits-pilani.ac.in/";
+            driver.navigate().to(url);
+            WebElement launchlogin = driver.findElement(By.cssSelector("a[class='btn btn-lg btn-primary']"));
+            launchlogin.click();
+            WebElement username = driver.findElement(By.cssSelector("input[id='username']"));
+            username.sendKeys("2020mt93542@wilp.bits-pilani.ac.in");
+            WebElement password = driver.findElement(By.cssSelector("input[id='pass']"));
+            password.sendKeys("02011985");
+            WebElement loginbutton = driver.findElement(By.cssSelector("button[id='submitbtn']"));
+            loginbutton.click();
+        }else if(locator.equalsIgnoreCase("xpath")){
+            System.out.println("Using XPath");
+            String url = "https://elearn.bits-pilani.ac.in/";
+            driver.navigate().to(url);
+            WebElement launchlogin = driver.findElement(By.xpath("//a[@class='btn btn-lg btn-primary']"));
+            launchlogin.click();
+            WebElement username = driver.findElement(By.xpath("//input[@id='username']"));
+            username.sendKeys("2020mt93542@wilp.bits-pilani.ac.in");
+            WebElement password = driver.findElement(By.xpath("//input[@id='pass']"));
+            password.sendKeys("02011985");
+            WebElement loginbutton = driver.findElement(By.xpath("//button[@id='submitbtn']"));
+            loginbutton.click();
+        }else{
+            driver.close();
+        }
+
+    }
 
     @After
     public void Close () {
@@ -144,15 +185,15 @@ public class Assignment2_BrowserAutomation {
 
     }
 
-    public static String get_browser() throws IOException {
+    public static String read_property(String lookup_str) throws IOException {
 
         Properties prop = new Properties();
         FileInputStream propfilename = null;
         String propFileName = "Common.properties";
         propfilename = new FileInputStream("src/"+propFileName);
         prop.load(propfilename);
-        String lob_question = prop.getProperty("browser");
-        return lob_question;
+        String browser_test = prop.getProperty(lookup_str);
+        return browser_test;
 
     }
 
