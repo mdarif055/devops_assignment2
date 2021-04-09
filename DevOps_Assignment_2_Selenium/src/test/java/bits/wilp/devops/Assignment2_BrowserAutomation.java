@@ -150,6 +150,7 @@ public class Assignment2_BrowserAutomation {
 
       //  Task 5 : Usage of locator types, whether to use CSS selector or Xpath
         if(locator.equalsIgnoreCase("cssSelector")) {
+
             System.out.println("Using cssSelector");
             String url = "https://elearn.bits-pilani.ac.in/";
             driver.navigate().to(url);
@@ -161,7 +162,9 @@ public class Assignment2_BrowserAutomation {
             password.sendKeys("02011985");
             WebElement loginbutton = driver.findElement(By.cssSelector("button[id='submitbtn']"));
             loginbutton.click();
+
         }else if(locator.equalsIgnoreCase("xpath")){
+
             System.out.println("Using XPath");
             String url = "https://elearn.bits-pilani.ac.in/";
             driver.navigate().to(url);
@@ -173,6 +176,7 @@ public class Assignment2_BrowserAutomation {
             password.sendKeys("02011985");
             WebElement loginbutton = driver.findElement(By.xpath("//button[@id='submitbtn']"));
             loginbutton.click();
+
         }else{
             driver.close();
         }
